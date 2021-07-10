@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhasmophobiaHelper</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module">
+        import { h, text, app } from "./lib/hyperapp2.0.8.js"
+        import { div, h1, h3, button, ul, li, span, svg, a, p, input } from "./lib/hyperapp-html1.2.3.js"
+
+        let names = ['EMF5', 'スピリットボックス', '氷点下', '指紋', 'オーブ', 'ライティング'];
+        let ghosts = [
+            {name: "スピリット", info: { 'EMF5': '', 'スピリットボックス': true, '氷点下': '', '指紋': true, 'オーブ': '', 'ライティング': true, '特徴': undefined, '弱点': undefined}},
+            {name: "レイス", info: { 'EMF5': '', 'スピリットボックス': true, '氷点下': true, '指紋': true, 'オーブ': '', 'ライティング': '', '特徴': '浮いてる。足跡つかない', '弱点': '塩を嫌う'}},
+            {name: "ファントム", info: { 'EMF5': true, 'スピリットボックス': '', '氷点下': true, '指紋': '', 'オーブ': true, 'ライティング': '', '特徴': '直視でSAN値低下', '弱点': '写真で消滅'}},
+            {name: "ポルターガイスト", info: { 'EMF5': '', 'スピリットボックス': true, '氷点下': '', '指紋': true, 'オーブ': true, 'ライティング': '', '特徴': '物を投げる', '弱点': '物がないと死ぬ'}},
+            {name: "バンシー", info: { 'EMF5': true, 'スピリットボックス': '', '氷点下': true, '指紋': true, 'オーブ': '', 'ライティング': '', '特徴': '1人づつ', '弱点': '十字架嫌い'}},
+            {name: "ジン", info: { 'EMF5': true, 'スピリットボックス': true, '氷点下': '', '指紋': '', 'オーブ': true, 'ライティング': '', '特徴': '遠くにいると早く移動', '弱点': undefined}},
+            {name: "メアー", info: { 'EMF5': '', 'スピリットボックス': true, '氷点下': true, '指紋': '', 'オーブ': true, 'ライティング': '', '特徴': '暗いところで狙う', '弱点': '明るいところでは平和'}},
+            {name: "レヴナント", info: { 'EMF5': true, 'スピリットボックス': '', '氷点下': '', '指紋': true, 'オーブ': '', 'ライティング': true, '特徴': '攻撃時高速移動', '弱点': '隠れると遅くなる'}},
+            {name: "シェード", info: { 'EMF5': true, 'スピリットボックス': '', '氷点下': '', '指紋': '', 'オーブ': true, 'ライティング': true, '特徴': '見つけにくい', '弱点': '複数いれば襲われない'}},
+            {name: "デーモン", info: { 'EMF5': '', 'スピリットボックス': true, '氷点下': true, '指紋': '', 'オーブ': '', 'ライティング': true, '特徴': '積極的', '弱点': 'ウィジャ盤でSAN値低下しない'}},
+            {name: "幽霊", info: { 'EMF5': '', 'スピリットボックス': '', '氷点下': true, '指紋': '', 'オーブ': true, 'ライティング': true, '特徴': '正気度に影響大', '弱点': 'スマッジスティックで込められる'}},
+            {name: "鬼", info: { 'EMF5': true, 'スピリットボックス': true, '氷点下': '', '指紋': '', 'オーブ': '', 'ライティング': true, '特徴': '人に近づくと活性化。高速で物を投げる', '弱点': '活発なので会いやすい'}},
+            {name: "ハントゥ", info: { 'EMF5': '', 'スピリットボックス': '', '氷点下': '', '指紋': true, 'オーブ': true, 'ライティング': true, '特徴': '温度が下がると早くなる', '弱点': '温かいと遅くなる'}},
+            {name: "ハントゥ", info: { 'EMF5': '', 'スピリットボックス': true, '氷点下': '', '指紋': '', 'オーブ': true, 'ライティング': true, '特徴': '会話で活発化', '弱点': 'ハント中は遠くの声が聞こえない'}},
+        ]
+
+        const state = {
+            'names': names,
+            'ghosts': ghosts,
+            'filters': {'EMF5': undefined, 'スピリットボックス': undefined, '氷点下': undefined, '指紋': undefined, 'オーブ': undefined, 'ライティング': undefined},
+        }
+
+        const SetFilter = (state, nametype) => {
+            let _state = {...state};
+            let filterState = nametype.type == "〇" ? true : false;
+            _state.filters[nametype.name] = _state.filters[nametype.name] == filterState ? undefined : filterState;
+
+            return _state;
+        }
+
+        const Switch = (name) =>
+            div({}, [
+                    p({}, text(name)),
+                    button({onclick: [SetFilter, {'name': name, type: "〇"}], class: state.filters[name] ? 'active' : ''}, text("〇")),
+                    button({onclick: [SetFilter, {'name': name, type: "×"}], class: state.filters[name] == false ? 'active' : ''}, text("×")),
+                ]
+            );
+        
+        const SwitchList = (names) =>
+            div({ id: "selector" }, names.map(name =>
+                Switch(name)));
+        
+        const EnemyInfo = (ghost) =>
+            div({}, [
+                p({class: 'name'}, text(ghost.name)),
+                p({class: 'good'}, [
+                    p({}, text('〇')),
+                    p({}, text(ghost.info.特徴 ?? "なし")),
+                ]),
+                p({class: 'bad'}, [
+                    p({}, text('×')),
+                    p({}, text(ghost.info.弱点 ?? "なし")),
+                ]),
+            ]);
+        
+        const EnemyList = (ghosts) =>
+            div({id: 'infos'}, ghosts.map(ghost =>
+                EnemyInfo(ghost)));
+        
+        app({
+            node: document.getElementById("phasmo-helper"),
+            init: [
+                state
+            ],
+            view: state =>
+                div({}, [
+                    span({}, text('name')),
+                    input({type: "text"}),
+                    SwitchList(state.names),
+                    EnemyList(state.ghosts
+                        .filter(g => {
+                            let matched = true;
+                            Object.keys(state.filters).forEach(key =>
+                                matched &&= state.filters[key] == undefined || state.filters[key] == g.info[key]
+                            )
+                            return matched;
+                        })),
+                ])
+        })
+    </script>
+</head>
+<body>
+    <main id="phasmo-helper"></main>
+</body>
+</html>

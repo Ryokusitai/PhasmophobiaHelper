@@ -1,0 +1,54 @@
+#selector {
+    display: flex;
+}
+
+#selector div {
+    padding: 0 5px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+#selector div button {
+    width: 5rem;
+    height: 3rem;
+    margin-bottom: 10px;
+    font-size: 1.7rem;
+    border: solid 2px #666;
+    border-radius: 10%;
+}
+
+#selector div button.active {
+    background-color: lightsalmon;
+    border-color: coral;
+}
+
+#infos {
+    display: flex;
+    flex-wrap: wrap;
+    width: 1000px;
+}
+
+#infos div {
+    width: 210px;
+    padding: 5px 15px;
+    border: solid 1px #666;
+}
+
+#infos div .name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-bottom: solid 1px;
+    margin-top: 0.7rem;
+    margin-bottom: 1rem;
+}
+
+#infos div .good, #infos div .bad {
+    display: flex;
+}
+
+#infos div .good p, #infos div .bad p {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-right: 5px;
+}
