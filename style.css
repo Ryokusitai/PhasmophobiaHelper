@@ -3,6 +3,8 @@ body {
 }
 
 #selector {
+    position: sticky;
+    top: 0;
     display: flex;
     background-color: white;
     border-bottom: solid 1px #666;
@@ -65,8 +67,6 @@ body {
 
 @media (max-width: 500px) {
     #selector {
-        position: sticky;
-        top: 0;
         justify-content: space-between;
         align-items: flex-end;
         width: 100%;
