@@ -1,5 +1,6 @@
 #selector {
     display: flex;
+    flex-wrap: wrap;
 }
 
 #selector div {
@@ -26,7 +27,7 @@
 #infos {
     display: flex;
     flex-wrap: wrap;
-    width: 1000px;
+    max-width: 1000px;
 }
 
 #infos div {
