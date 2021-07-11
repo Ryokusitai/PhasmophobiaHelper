@@ -78,8 +78,6 @@
             ],
             view: state =>
                 div({}, [
-                    span({}, text('name')),
-                    input({type: "text"}),
                     SwitchList(state.names),
                     EnemyList(state.ghosts
                         .filter(g => {
