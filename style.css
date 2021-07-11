@@ -1,6 +1,14 @@
+body {
+    margin: 0;
+}
+
 #selector {
     display: flex;
-    flex-wrap: wrap;
+    background-color: white;
+    border-bottom: solid 1px #666;
+    padding-bottom: 5px;
+    margin-bottom: 17px;
+    /* flex-wrap: wrap; */
 }
 
 #selector div {
@@ -11,10 +19,7 @@
 }
 
 #selector div button {
-    width: 5rem;
-    height: 3rem;
     margin-bottom: 10px;
-    font-size: 1.7rem;
     border: solid 2px #666;
     border-radius: 10%;
 }
@@ -31,7 +36,6 @@
 }
 
 #infos div {
-    width: 210px;
     padding: 5px 15px;
     border: solid 1px #666;
 }
@@ -52,4 +56,45 @@
     margin-top: 0;
     margin-bottom: 0;
     padding-right: 5px;
+}
+
+@media (max-width: 500px) {
+    #selector {
+        position: sticky;
+        top: 0;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    #selector div {
+        /* width: 20vw; */
+        width: 100%;
+    }
+
+    #selector div p {
+        margin-top: 0.5em;
+    }
+
+    #selector div button {
+        width: 100%;
+        height: 3rem;
+        font-size: 1.7rem;
+    }
+
+    #infos div {
+        width: 50vw;
+        box-sizing: border-box;
+    }
+}
+
+@media (min-width: 501px) {
+    #selector div button {
+        width: 5rem;
+        height: 3rem;
+        font-size: 1.7rem;
+    }
+
+    #infos div {
+        width: 210px;
+    }
 }
