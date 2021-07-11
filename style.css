@@ -8,7 +8,6 @@ body {
     border-bottom: solid 1px #666;
     padding-bottom: 5px;
     margin-bottom: 17px;
-    /* flex-wrap: wrap; */
 }
 
 #selector div {
@@ -64,10 +63,10 @@ body {
         top: 0;
         justify-content: space-between;
         align-items: flex-end;
+        width: 100%;
     }
 
     #selector div {
-        /* width: 20vw; */
         width: 100%;
     }
 
@@ -78,7 +77,10 @@ body {
     #selector div button {
         width: 100%;
         height: 3rem;
-        font-size: 1.7rem;
+    }
+
+    #selector div button svg {
+        margin-top: 3px;
     }
 
     #infos div {
