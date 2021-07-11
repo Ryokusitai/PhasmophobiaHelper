@@ -29,6 +29,7 @@
         ]
 
         const state = {
+            'showTrait': true, // 特性表示or反応アイテム表示
             'names': names,
             'ghosts': ghosts,
             'filters': {'EMF5': undefined, 'スピリットボックス': undefined, '氷点下': undefined, '指紋': undefined, 'オーブ': undefined, 'ライティング': undefined},
@@ -39,6 +40,12 @@
             let filterState = nametype.type == "〇" ? true : false;
             _state.filters[nametype.name] = _state.filters[nametype.name] == filterState ? undefined : filterState;
 
+            return _state;
+        }
+
+        const ToggleShowInfo = (state) => {
+            let _state = {...state};
+            _state.showTrait = ! _state.showTrait;
             return _state;
         }
 
@@ -62,22 +69,34 @@
             div({ id: "selector" }, names.map(name =>
                 Switch(name)));
         
-        const EnemyInfo = (ghost) =>
-            div({}, [
+        const EnemyInfo = (showTrait, ghost) =>
+            div({onclick: [ToggleShowInfo]}, [
                 p({class: 'name'}, text(ghost.name)),
-                p({class: 'good'}, [
-                    p({}, text('〇')),
-                    p({}, text(ghost.info.特徴 ?? "なし")),
-                ]),
-                p({class: 'bad'}, [
-                    p({}, text('×')),
-                    p({}, text(ghost.info.弱点 ?? "なし")),
-                ]),
+                ...showTrait
+                    ? EnemyTrait(ghost)
+                    : EnemyReactiveItem(ghost)
             ]);
         
-        const EnemyList = (ghosts) =>
-            div({id: 'infos'}, ghosts.map(ghost =>
-                EnemyInfo(ghost)));
+        const EnemyTrait = (ghost) => [
+            p({class: 'good'}, [
+                p({}, text('〇')),
+                p({}, text(ghost.info.特徴 ?? "なし")),
+            ]),
+            p({class: 'bad'}, [
+                p({}, text('×')),
+                p({}, text(ghost.info.弱点 ?? "なし")),
+            ])
+        ];
+        
+        const EnemyReactiveItem = (ghost) =>
+            Object.keys(ghost.info)
+                .filter(key => key != '特徴' && key != '弱点' && ghost.info[key])
+                .map(key => p({class: Object.keys(state.filters).filter(key => state.filters[key]).includes(key) ? 'active' : ''}, text(key)));
+        
+        const EnemyList = (showTrait, ghosts) =>
+            div({id: 'infos'}, 
+                ghosts.map(ghost => EnemyInfo(showTrait, ghost))
+            );
         
         app({
             node: document.getElementById("phasmo-helper"),
@@ -87,7 +106,8 @@
             view: state =>
                 div({}, [
                     SwitchList(state.names),
-                    EnemyList(state.ghosts
+                    span({}, text('下の項目をクリック(タップ)で情報切り替え')),
+                    EnemyList(state.showTrait, state.ghosts
                         .filter(g => {
                             let matched = true;
                             Object.keys(state.filters).forEach(key =>

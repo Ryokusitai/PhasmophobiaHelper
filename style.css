@@ -37,6 +37,8 @@ body {
 #infos div {
     padding: 5px 15px;
     border: solid 1px #666;
+    /* スマホでclickイベントを反応させるために必要 */
+    cursor: pointer;
 }
 
 #infos div .name {
@@ -55,6 +57,10 @@ body {
     margin-top: 0;
     margin-bottom: 0;
     padding-right: 5px;
+}
+
+#infos div p.active {
+    background-color: lightsalmon;
 }
 
 @media (max-width: 500px) {
